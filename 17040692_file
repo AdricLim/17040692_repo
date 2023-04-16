@@ -7,10 +7,25 @@ pipeline {
           }
           }
           stage('17040692STG2') {
+	  when {
+                not {
+                    branch "Production web server not changed"
+                }
+          }
           steps {
-            input('Do you want to update to Development container?')
+                 sh '''#!/bin/bash
+                 puppet resource file /tmp/clone ensure=absent force=true;
+                 puppet resource file /tmp/clone ensure=directory;
+	   cd /tmp/clone;
+	   git clone https://<your token>@github.com/<your repo>/devops_repo.git;
+                 targets=puppetclient1;
+                 locate_script='/tmp/clone/devops_repo/script_to_run';
+                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
+                 '''
+                 echo "17040692STG2 - Push to production web server completed"
           }
           }
+	  
           stage('Three') {
           when {
                 not {
