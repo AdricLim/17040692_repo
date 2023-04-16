@@ -7,4 +7,4 @@ puppet resource file /tmp/17040692/clone ensure=absent force=true
 puppet resource file /tmp/17040692/clone ensure=directory
 cd /tmp/17040692/clone
 git clone https://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@github.com/AdricLim/17040692_repo.git
-cp -p /tmp/17040692/clone/17040692_repo/index.html 17040692_index.html
+cp -p /tmp/17040692/clone/17040692_repo/17040692_index.html /var/www/html/index.html 
