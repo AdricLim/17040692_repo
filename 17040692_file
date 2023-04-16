@@ -26,49 +26,28 @@ pipeline {
           }
           }
 	  
-          stage('Three') {
-          when {
-                not {
-                    branch "Development NOT updated"
-                }
-          }
+          stage('17040692STG3') {
           steps {
-                 sh '''#!/bin/bash
-                 puppet resource file /tmp/clone ensure=absent force=true;
-                 puppet resource file /tmp/clone ensure=directory;
-	   cd /tmp/clone;
-	   git clone https://<your token>@github.com/<your repo>/devops_repo.git;
-                 targets=puppetclient1;
-                 locate_script='/tmp/clone/devops_repo/script_to_run';
-                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
-                 '''
-                 echo "Development container updated"
+            input('17040692STG3: Proceed to test production web service?')
           }
           }
-          stage('Four') {
+	  
+          stage('17040692STG4') {
           steps {
-            input('Do you want to update to Production container: Proceed to Production')
-                
+                sh 'curl –Is http://17040692-websvr.localdomain |head –n 1  > /tmp/web-test-result'
+                sh 'cat /tmp/web-test-result'
+                echo "STG4: Production web server testing completed" 
           }
           }
-          stage('Five') {
-          when {
-                not {
-                    branch "Production NOT updated"
-                }
-          }
+          stage('17040692STG5') {
           steps {
-                 sh '''#!/bin/bash
-                 targets=puppetclient2;
-                 locate_script='/tmp/clone/devops_repo/script_to_run';
-                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
-                 '''
-                 echo "Production container updated"
+                 input('17040692STG5: Web server testing result has been inspected? Proceed ?')
           }
           }
-          stage('Completed updating Operation') {
+	  
+          stage('17040692STG6') {
           steps {
-            echo 'Completed updating to Production Container'
+            echo '17040692STG6: Production Operation is successful.'
           }
           }
       }
