@@ -20,7 +20,7 @@ pipeline {
                  git clone https://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@github.com/AdricLim/17040692_repo.git;
                  targets=17040692-websvr;
                  locate_script='/tmp/17040692/clone/17040692_repo/17040692_script';
-                 bolt script run $locate_script -t $targets --no-host-key-check --run-as root;
+                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
                  '''
                  echo "17040692STG2 - Push to production web server completed"
           }
