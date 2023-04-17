@@ -17,7 +17,7 @@ pipeline {
                  puppet resource file /tmp/17040692/clone ensure=absent force=true;
                  puppet resource file /tmp/17040692/clone ensure=directory;
                  cd /tmp/17040692/clone;
-                 git clone https://github.com/AdricLim/17040692_repo.git;
+                 git clone https://github.com/AdricLim/17040692_repo;
                  targets=17040692-websvr;
                  locate_script='/tmp/17040692/clone/17040692_repo/17040692_script';
                  bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
